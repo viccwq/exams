@@ -261,12 +261,190 @@ public:
      }
 };
 
+//数值的整数次方
+//给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。
+class Solution {
+public:
+    double Power(double base, int exponent) {
+    
+        if (!exponent)
+            return 1;
+        unsigned int exp = (exponent > 0) ? exponent : (exponent * -1);
+        double result = base;
+        while (--exp)
+        {
+            result *= base;
+        }
+        return (double)((exponent > 0) ? result : (1 / result)); 
+
+    }
+};
+
+
+
+//调整数组顺序使奇数位于偶数前面
+//输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，
+//所有的偶数位于位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+class Solution {
+public:
+    void reOrderArray(vector<int> &array) {
+        vector<int> even_a; 
+        int size = array.size();
+        int odd_idx = 0;
+        for(int i = 0; i < size; i++)
+        {
+            if (array[i] & 0x1)
+            {
+                if (odd_idx < i)
+                    array[odd_idx] = array[i];
+                odd_idx++;
+            }
+            else
+                even_a.push_back(array[i]);
+        }
+        for(int i = odd_idx; i < size; i++)
+        {
+            array[i] = even_a[i - odd_idx];
+        }
+
+    }
+};
+
+
+
+//链表中倒数第k个节点
+//输入一个链表，输出该链表中倒数第k个结点。
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+        int list_len = 0;
+        ListNode * list_k =  pListHead;
+        ListNode * list_r =  pListHead;
+        for(int i=0;i<k;i++)      //list_r 先走k-1步；
+        {
+            if(list_r == NULL)
+                return NULL;
+            list_r = list_r->next;
+        }
+        while(list_r != NULL)
+        {
+            list_r = list_r->next;
+            list_k = list_k->next;
+        }
+        return list_k;  
+    }
+};
+
+
+
+//反转链表
+//输入一个链表，反转链表后，输出链表的所有元素。
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* ReverseList(ListNode* pHead) {
+        ListNode* p_temp = pHead;
+        if (NULL == p_temp)
+            return NULL;
+
+        ListNode* p_temp_n = pHead->next;
+        if (NULL == p_temp_n)
+            return pHead;
+
+        pHead->next = NULL;
+        while(NULL != p_temp_n)
+        {
+            ListNode* p = p_temp_n->next; 
+            p_temp_n->next = p_temp;
+            p_temp = p_temp_n;
+            p_temp_n = p;
+        }
+
+        return p_temp;
+
+
+    }
+};
 
 
 
 
 
+//合并两个排序的链表
+//输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* Merge(ListNode* pHead1, ListNode* pHead2)
+    {
+        
+        if (!pHead1)
+            return pHead2;
+        if (!pHead2)
+            return pHead1;
+        ListNode* p_temp= NULL, *ph1 = pHead1, *ph2 = pHead2;
+        ListNode* p_head= NULL;
 
+        if (ph1->val < ph2->val)
+        {
+            p_head= ph1;
+            ph1 = ph1->next;
+        }
+        else
+        {
+            p_head= ph2;
+            ph2 = ph2->next;
+        }
+
+        p_temp = p_head;
+        while (ph1 && ph2)
+        {
+            if (ph1->val < ph2->val)
+            {
+                p_temp->next = ph1;
+                ph1 = ph1->next;
+            }
+            else
+            {
+                p_temp->next = ph2;
+                ph2 = ph2->next;
+            }
+            p_temp = p_temp->next;
+        }
+
+        if (ph1)
+            p_temp->next = ph1;
+        else if (ph2) 
+            p_temp->next = ph2;
+        else
+            p_temp->next = NULL;
+
+        return p_head;
+
+    }
+};
 
 
 
