@@ -447,6 +447,74 @@ public:
 };
 
 
+//删除链表中重复的结点
+//在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。 例如，链表1->2->3->3->4->4->5 处理后为 1->2->5
+
+/*
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) :
+        val(x), next(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    ListNode* deleteDuplication(ListNode* pHead)
+    {
+        int val;
+        if (NULL == pHead)
+            return NULL;
+        if (NULL == pHead->next)
+            return pHead;
+
+        ListNode head(-1);
+        head.next = pHead;
+
+        ListNode* p_pre = &head;
+        ListNode* p_cur = head.next;
+        ListNode* p_d = NULL;
+        while (p_cur && p_cur->next)
+        {
+            if (p_cur->next->val == p_cur->val)
+            {
+                val = p_cur->val;
+                p_d = p_cur;
+                p_cur = p_cur->next->next;
+                p_pre->next = p_cur;
+                    
+                delete p_d->next;
+                delete p_d;
+                continue;
+            }
+
+            if (p_cur->val == val)
+            {
+                p_d = p_cur;
+                p_cur = p_cur->next;
+                p_pre->next = p_cur;
+                delete p_d;
+            }
+            else
+            {
+                p_pre = p_cur;
+                p_cur = p_cur->next;
+            }
+        }
+
+        if (p_cur && p_cur->val == val)
+        {
+            p_pre->next = NULL;
+            delete p_cur;
+        }
+        return head.next;
+
+    }
+};
+
+
+
 
 
 
