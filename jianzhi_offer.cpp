@@ -506,6 +506,240 @@ public:
 
 };
 
+//操作给定的二叉树，将其变换为源二叉树的镜像。 
+//输入描述:
+//二叉树的镜像定义：源二叉树 
+//    	    8
+//    	   /  \
+//    	  6   10
+//    	 / \  / \
+//    	5  7 9 11
+//    	镜像二叉树
+//    	    8
+//    	   /  \
+//    	  10   6
+//    	 / \  / \
+//    	11 9 7  5
+
+
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    void Mirror(TreeNode *pRoot) {
+
+        if (pRoot)
+        {
+           TreeNode *temp = pRoot->left;
+           pRoot->left = pRoot->right;
+           pRoot->right = temp;
+        }
+        else
+           return;
+        Mirror(pRoot->left);
+        Mirror(pRoot->right);
+
+    }
+};
+
+
+//顺时针打印矩阵
+//输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，例如，如果输入如下矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
+class Solution {
+public:
+    vector<int> printMatrix(vector<vector<int> > matrix) {
+        int h = matrix.size();
+        int w = matrix[0].size();
+        vector<int> res;
+        if (h == 0)
+            return res;
+        else if (h == 1)
+            return matrix[0];
+        else if (h > 1 && w == 1)
+        {
+            for(int i = 0; i < h; i++)
+                res.push_back(matrix[i][0]);
+            return res;
+        }
+        else
+        {
+            int top = 0, bottom = h - 1, left = 0, right = w - 1;
+            while (top <= bottom && left <= right)
+            {
+                
+                
+                for(int i = left; i <= right; i++)
+                    res.push_back(matrix[top][i]);          
+                for(int j = top + 1; j <= bottom - 1; j++)
+                    res.push_back(matrix[j][right]);
+
+                if (top != bottom)
+                {
+                    for(int k = right; k >= left; k--)
+                        res.push_back(matrix[bottom][k]);
+                }
+
+                if (right != left)
+                {
+                    for(int m = bottom - 1; m >= top + 1; m--)
+                        res.push_back(matrix[m][left]);
+                }
+                top++;
+                bottom--;
+                left++;
+                right--;
+            }
+            return res;
+        }
+
+
+
+    }
+};
+
+//包含min函数的栈
+//定义栈的数据结构，请在该类型中实现一个能够得到栈最小元素的min函数。
+class Solution {
+public:
+
+
+    stack<int> data, min_data;
+    void push(int value) {
+        
+        data.push(value);
+        if (min_data.empty())
+            min_data.push(value);
+        else
+        {
+            int last_min = min_data.top();
+            min_data.push((last_min < value)?last_min:value);
+        }
+    }
+    void pop() {
+        data.pop();
+        min_data.pop();
+       
+    }
+    int top() {
+        if (!data.empty())
+            return data.top();
+        else
+            return -1;
+        
+    }
+    int min() {
+        if (!min_data.empty())
+            return min_data.top();
+        else
+            return -1;
+    }
+
+};
+
+//栈的压入 弹出序列
+//输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4，5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+
+
+class Solution {
+public:
+    bool IsPopOrder(vector<int> pushV,vector<int> popV) {
+  		int size = popV.size();
+		if (0 == size) 
+			return false;
+
+		stack<int> data;
+		for(int i = 0, j = 0; i < size; i++)
+		{
+			data.push(pushV[i]);
+			while(j < size && data.top() == popV[j])
+			{
+				data.pop();
+				j++;
+			}    
+		}
+		return data.empty();        
+    }
+};
+
+//从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    vector<int> PrintFromTopToBottom(TreeNode* root) {
+		vector<int> result;
+		if(root==NULL)
+			return result;
+
+		queue<TreeNode *> Q;
+		Q.push(root);
+		while(!Q.empty())
+		{
+			TreeNode* p = Q.front();
+			result.push_back(p->val);
+			Q.pop();
+			if(p->left != NULL)
+				Q.push(p->left);
+			if(p->right != NULL)
+				Q.push(p->right);
+		}
+		return result;
+    }
+};
+
+//输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+class Solution {
+public:
+    bool VerifySquenceOfBST(vector<int> sequence) {
+		int size = sequence.size();
+		if (!size)
+			return false;
+
+		return isPostBST(sequence, 0, size - 1);
+    }
+    
+    bool isPostBST(vector<int>& sequence, int start, int end)
+    {
+        if (end <= start)
+            return true;
+
+        int i = start;
+        int data = sequence[end];
+        for (; i < end; i++)
+        {
+            if (sequence[i] > data)
+                break;
+        }
+        //对序列的右子树进行判断
+        int j = i;
+        for (; j < end; j++)
+        {
+            if (sequence[j] < data)
+                return false;
+        }
+        return isPostBST(sequence, start, i - 1) \
+            && isPostBST(sequence, i, end - 1);
+    }   
+    
+    
+};
+
+
+
 
 
 
