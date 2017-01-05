@@ -740,6 +740,186 @@ public:
 
 
 
+//输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
+//路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+
+public:
+    vector<vector<int> > FindPath(TreeNode* root,int expectNumber) {
+		if (NULL == root)
+			return allRes;
+		Find(root, expectNumber);
+		return allRes;
+    }
+
+	vector<vector<int> >allRes;
+	vector<int> tmp;
+
+	void Find(TreeNode * node , int val)
+	{
+		tmp.push_back(node->val);
+		int val_tmp = val - node->val;
+
+		if(val_tmp == 0 && !node->left && !node->right)
+			allRes.push_back(tmp);
+		else 
+		{
+			if(node->left) 
+				Find(node->left, val_tmp);
+			if(node->right) 
+				Find(node->right, val_tmp);
+		}
+		tmp.pop_back(); 
+	}
+};
+
+
+
+//输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针指向任意一个节点），
+//返回结果为复制后复杂链表的head。（注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
+/*
+struct RandomListNode {
+    int label;
+    struct RandomListNode *next, *random;
+    RandomListNode(int x) :
+            label(x), next(NULL), random(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    RandomListNode* Clone(RandomListNode* pHead)
+    {
+		if (NULL == pHead)
+			return NULL;
+		RandomListNode* p_tmp_1 = pHead;
+		RandomListNode* p_tmp_2 = NULL;
+
+		while (p_tmp_1)
+		{
+			RandomListNode* p_new = new RandomListNode(p_tmp_1->label);
+			p_tmp_2 = p_tmp_1->next;
+
+			p_tmp_1->next = p_new;
+			p_new->next = p_tmp_2;
+			
+			p_tmp_1 = p_tmp_2;
+		} 
+		
+		p_tmp_1 = pHead;
+		while (p_tmp_1)
+		{			
+			if (p_tmp_1->random != NULL)
+				p_tmp_1->next->random = p_tmp_1->random->next;
+
+			p_tmp_1 = p_tmp_1->next->next;
+		} 
+
+		p_tmp_1 = pHead;
+		RandomListNode* p_new = pHead->next;
+		p_tmp_2 = p_new;
+		while (1)
+		{
+
+			p_tmp_1->next = p_tmp_2->next;
+			p_tmp_1 = p_tmp_2->next;
+			if (p_tmp_1)
+			{
+				p_tmp_2->next = p_tmp_1->next;
+				p_tmp_2 = p_tmp_1->next;
+			}
+			else
+			{
+				p_tmp_2->next = NULL;
+				break;
+			}
+		}
+		return p_new;
+
+    }
+};
+
+
+//输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+//要求不能创建任何新的结点，只能调整树中结点指针的指向。
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+	bool first_flag = true;
+	TreeNode *p_n = NULL;
+	TreeNode *p_head = NULL;
+
+    TreeNode* Convert(TreeNode* pRootOfTree)
+    {
+		if (!pRootOfTree)
+			return NULL;
+        first_flag = true;
+		add_node(pRootOfTree);
+		p_n->right = NULL;
+		return p_head;       
+    }
+
+	void add_node(TreeNode* p_node)
+	{
+		if (NULL == p_node)
+			return;
+
+		TreeNode *p_left = p_node->left;
+		TreeNode *p_right = p_node->right;
+		add_node(p_left);
+
+		if (first_flag)
+		{
+			p_head = p_node;
+			p_n = p_node;
+			first_flag = false;
+		}
+		else
+		{
+			p_n->right = p_node;
+			p_node->left = p_n;
+			p_n = p_node;
+		}
+		add_node(p_right);
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
