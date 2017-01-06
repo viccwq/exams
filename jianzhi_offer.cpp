@@ -902,6 +902,95 @@ public:
 };
 
 
+//输入一个字符串,按字典序打印出该字符串中字符的所有排列。
+//例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。 
+//输入描述:
+//输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。
+class Solution {
+public:
+	void Help(vector<string> &ans, int k, string str)
+	{
+		if(k == str.size() - 1)
+			ans.push_back(str);
+		for(int i = k; i < str.size(); i++)
+		{
+			if(i != k && str[k] == str[i])
+				continue;
+			swap(str[i], str[k]);
+			Help(ans, k + 1, str);
+		}
+	}
+
+	vector<string> Permutation(string str) {
+		sort(str.begin(), str.end());
+		vector<string> vect;
+		Help(vect, 0, str);
+		return vect;
+	}
+
+};
+
+
+//数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。
+//由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0
+class Solution {
+public:
+	int MoreThanHalfNum_Solution(vector<int> numbers) {
+		int size = numbers.size();
+		int size_half = size / 2;
+		int idx = -1;
+		if (0 == size)
+			return 0;
+		if (1 == size)
+			return numbers[0];
+
+		int *p_cal = new int [size];
+		for (int i = 0; i < size; i++)
+			p_cal[i] = 1;
+
+		for (int i = 0; i < (size - 1); i++)
+		{
+			if (0 == p_cal[i])
+				continue;
+			for (int j = (i + 1); j < size; j++)
+			{
+				if (0 == p_cal[j])
+					continue;
+				if (numbers[i] == numbers[j])
+				{
+					p_cal[i]++;
+					p_cal[j] = 0;
+				}
+			}
+
+			if (p_cal[i] > size_half)
+			{
+				idx = i;
+				break;
+			}
+		}
+		delete [] p_cal;
+		if (idx > -1)
+			return numbers[idx];
+		else
+			return 0;  
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
