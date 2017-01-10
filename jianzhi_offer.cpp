@@ -978,16 +978,140 @@ public:
 };
 
 
+//输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,
+class Solution {
+public:
+	vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
+		vector<int> min;
+		vector<int> temp(input);		
+		vector<int>::iterator it;
+		if (0 == k || k > input.size())
+			return min;
+
+		int min_a = 0;
+		int min_b = 0x7fffffff;
+		for (it = temp.begin(); it != temp.end(); it++)
+		{
+			if (min_b > (*it))
+				min_b = (*it);
+		}
+
+		min.push_back(min_b);
+		if (1 == k)		
+			return min;
+
+		while(min.size() < k)
+		{
+			min_a = min_b;
+			min_b = 0x7fffffff;
+			for (it = temp.begin(); it != temp.end(); )
+			{
+				if (min_a == (*it))
+				{
+					temp.erase(it);
+					continue;
+				}
+				if (min_b > (*it))
+					min_b = (*it);
+				it++;
+			}
+			min.push_back(min_b);
+		}
+
+		return min;
+	}
+};
 
 
+class Solution {
+public:
+    vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
+        vector<int> vec;
+        if(input.size() < k)
+            return vec;
+        if(input.size() == k)
+            return input;
+        sort(input.begin(), input.end());
+        for(int i = 0; i < k; ++i)
+            vec.push_back(input[i]);
+        return vec;
+    }
+};
+
+//HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:
+//在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。
+//但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？
+//例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。
+//你会不会被他忽悠住？(子向量的长度至少是1)
+
+class Solution {
+public:
+	int FindGreatestSumOfSubArray(vector<int> array) {
+		int size = array.size();
+		if (0 == size)
+			return 0;
+		if (1 == size)
+			return array[0];
+		if (2 == size)
+			return (array[0] > array[1])?array[0]:array[1];
+
+		int max = array[0];
+		int temp = 0;
+		for (int i = 0; i < size; i++)
+		{
+			temp = 0;
+			for (int j = i; j < size; j++)
+			{
+				temp += array[j];
+				if (temp > max)
+					max = temp;
+			}
+		}
+		return max;
 
 
+	}
+};
+/*
+算法时间复杂度O（n）
+用total记录累计值，maxSum记录和最大
+基于思想：对于一个数A，若是A的左边累计数非负，那么加上A能使得值不小于A，认为累计值对
+          整体和是有贡献的。如果前几项累计值负数，则认为有害于总和，total记录当前值。
+此时 若和大于maxSum 则用maxSum记录下来
+*/
+public class Solution {
+    public int FindGreatestSumOfSubArray(int[] array) {
+        if(array.length==0)
+            return 0;
+        else{
+            int total=array[0],maxSum=array[0];
+            for(int i=1;i<array.length;i++){
+                if(total>=0)
+                    total+=array[i];
+                else
+                    total=array[i];
+                if(total>maxSum)
+                    maxSum=total;
+            }
+            return maxSum;
+        }
+         
+    }
+}
 
 
+//整数中1出现的次数（从1到n整数中1出现的次数）
+//求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？
+//为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,
+//但是对于后面问题他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,
+//可以很快的求出任意非负整数区间中1出现的次数。
+class Solution {
+public:
+	int NumberOf1Between1AndN_Solution(int n)
+	{
 
-
-
-
+	}
+};
 
 
 
