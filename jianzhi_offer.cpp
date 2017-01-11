@@ -1105,13 +1105,132 @@ public class Solution {
 //为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,
 //但是对于后面问题他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,
 //可以很快的求出任意非负整数区间中1出现的次数。
+
 class Solution {
 public:
 	int NumberOf1Between1AndN_Solution(int n)
 	{
+		int count = 0;
+		if (0 == n)
+			return 0;
 
+		for (int i = 0; i <= n; i++)
+			count += NumberOf1(i);
+		return count;
+	}
+
+	int NumberOf1(int n)
+	{
+		int number = 0;
+		while(n != 0)
+		{
+			if(n % 10 == 1)
+				number++;
+
+			n = n / 10;
+		}
+		return number;
 	}
 };
+
+
+
+//输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+//例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+class Solution {
+public:
+	string PrintMinNumber(vector<int> numbers) {
+		string str = "";
+		int size = numbers.size();
+		if (0 == size)
+			return str;
+		if (1 == size)
+		{
+			return to_string(numbers[0]);
+		}
+
+		vector<string> vec_str;
+		for (int j = 0; j < size; j++)
+		{
+			vec_str.push_back(to_string(numbers[j]));
+		}
+
+
+		for (int i = 0; i < size - 1; i++)
+		{
+			for (int j = i; j < size; j++)
+			{
+				string s1 = vec_str[i] + vec_str[j];
+				string s2 = vec_str[j] + vec_str[i];
+				if (s1 > s2)
+					swap(vec_str[i], vec_str[j]);
+			}
+			str += vec_str[i];
+		}
+		str += vec_str[size - 1];
+		return str;
+		
+	}
+};
+
+
+//把只包含因子2、3和5的数称作丑数（Ugly Number）。
+//例如6、8都是丑数，但14不是，因为它包含因子7。 
+//习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+class Solution {
+public:
+    int GetUglyNumber_Solution(int index) {
+		if (index <= 0)
+			return 0;
+		if (index >= 1 && index <=6)
+			return index;
+
+		int i2 = 0, i3 = 0, i5 = 0;
+		vector<int> ugly;
+		ugly.push_back(1);
+		while (ugly.size() < index)
+		{
+			int v2 = ugly[i2] * 2;
+			int v3 = ugly[i3] * 3;
+			int v5 = ugly[i5] * 5;
+			int v_min = min(min(v2, v3), v5);
+			ugly.push_back(v_min);
+			if (v_min == v2)
+				i2++;
+			if (v_min == v3)
+				i3++;
+			if (v_min == v5)
+				i5++;
+		}
+		return ugly[index - 1];
+
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
