@@ -1210,7 +1210,52 @@ public:
 
 
 
+//在一个字符串(1<=字符串长度<=10000，全部由大写字母组成)
+//中找到第一个只出现一次的字符,并返回它的位置
 
+class Solution {
+public:
+	int FirstNotRepeatingChar(string str) {
+		int count[256] = {0};
+
+		for (int i = 0; i < str.size(); i++)
+			count[(str[i])]++;
+
+		for (int i = 0; i < str.size(); i++)
+		{
+			if (1 == count[(str[i])])
+				return i;
+		}
+		return -1;       
+	}
+};
+
+
+//在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
+//输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 
+//即输出P%1000000007 
+/*
+输入描述:
+题目保证输入的数组中没有的相同的数字
+	数据范围：
+	对于%50的数据,size<=10^4
+	对于%75的数据,size<=10^5
+	对于%100的数据,size<=2*10^5
+
+
+输入例子:
+1,2,3,4,5,6,7,0
+
+输出例子:
+7
+*/
+
+class Solution {
+public:
+	int InversePairs(vector<int> data) {
+
+	}
+};
 
 
 
