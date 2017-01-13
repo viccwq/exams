@@ -1253,10 +1253,82 @@ public:
 class Solution {
 public:
 	int InversePairs(vector<int> data) {
+		int size = data.size();
+
+		if (size <= 1)
+			return 0;
+
+		int count = 0;
+		for (int i = 0; i < size - 1; i++)
+		{
+			for (int j = i + 1; j < size; j++)
+			{
+				if (data[i] > data[j])
+					count++;
+			}
+		}
+		return (count % 1000000007);
 
 	}
 };
 
+
+class Solution {
+public:
+	//http://blog.csdn.net/derrantcm/article/details/46761051
+	int InversePairsCore( vector<int> &data, vector<int> &copy, int start, int end)
+	{
+		if (start == end)
+		{
+			copy[start]=data[start];
+			return 0;
+		}
+
+		int mid = (start + end)/ 2 ;
+		int left = InversePairsCore(copy, data, start, mid);
+		int right = InversePairsCore(copy, data, mid + 1, end);
+		long crossCount = 0;
+		int i = mid, j = end, temp = end;
+
+		while(i >= start && j >= (mid + 1)) 
+		{  
+			if (data[i] > data[j]) 
+			{ 
+				copy[temp--] = data[i--];
+				crossCount += j - mid;
+			} 
+			else 
+			{
+				copy[temp--] = data[j--]; 
+			}
+		}
+		while(i >= start) 
+		{
+			copy[temp--] = data[i--];
+		}
+		while(j >= (mid + 1)) 
+		{
+			copy[temp--] = data[j--];
+		}
+
+		long ret = (left + right + crossCount);
+		if (ret > 1000000007)
+			return (ret % 1000000007);
+		else
+			return ret;
+	}
+	int InversePairs(vector<int> data) {
+		if (data. size() <= 1) 
+			return 0;
+		else if (data. size() == 2) 
+			return (data[0] > data[1] ? 1 : 0);
+		else 
+		{
+			vector<int> copy(data);
+			return InversePairsCore(data, copy, 0 , data.size()- 1);
+		}
+	}
+};
 
 
 
