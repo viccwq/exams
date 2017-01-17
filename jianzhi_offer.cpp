@@ -1331,7 +1331,134 @@ public:
 };
 
 
+//输入两个链表，找出它们的第一个公共结点。
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+	ListNode* FindFirstCommonNode( ListNode* pHead1, ListNode* pHead2) {
+		if (!pHead1 || !pHead2)
+			return NULL;
 
+		if (pHead1 == pHead2)
+			return pHead1;
+
+		ListNode *p_1 = pHead1;
+		ListNode *p_2 = pHead2;
+		while (NULL != p_1 && NULL != p_2)
+		{
+			p_1 = p_1->next;
+			p_2 = p_2->next;
+		}
+
+		if (NULL != p_1)
+		{
+			ListNode *p = pHead1;
+			while (NULL != p_1)
+			{
+				p = p->next;
+				p_1 = p_1->next;
+			}
+			p_1 = p;
+			p_2 = pHead2;
+		}
+		else if (NULL != p_2)
+		{
+			ListNode *p = pHead2;
+			while (NULL != p_2)
+			{
+				p = p->next;
+				p_2 = p_2->next;
+			}
+			p_2 = p;
+			p_1 = pHead1;
+		}
+		else
+		{
+			p_1 = pHead1;
+			p_2 = pHead2;
+		}
+
+		while (p_1 != p_2)
+		{
+			p_2 = p_2->next;
+			p_1 = p_1->next;
+		}
+		return p_1;        
+	}
+};
+
+
+class Solution {
+public:
+	ListNode* FindFirstCommonNode( ListNode* pHead1, ListNode* pHead2) {
+		if (!pHead1 || !pHead2)
+			return NULL;
+
+		if (pHead1 == pHead2)
+			return pHead1;
+
+		ListNode *p_1 = pHead1;
+		ListNode *p_2 = pHead2;
+		ListNode *p = NULL;
+		while (NULL != p_1 && NULL != p_2)
+		{
+			p_1 = p_1->next;
+			p_2 = p_2->next;
+		}
+
+		int flag = 0;
+		if (NULL != p_1)
+		{
+			flag = 1;
+			p = pHead1;
+		}
+		else
+		{
+			flag = 0;
+			p = pHead2;
+		}
+
+		while (NULL != p_2)
+		{
+			p_2 = p_2->next;
+			p = p->next;
+		}
+
+		while (NULL != p_1)
+		{
+			p_1 = p_1->next;
+			p = p->next;
+		}
+
+		if (flag == 1)
+		{
+			p_1 = p;
+			p_2 = pHead2;
+		}
+		else
+		{
+			p_1 = pHead1;
+			p_2 = p;
+		}
+
+
+		while (p_1 != p_2)
+		{
+			p_2 = p_2->next;
+			p_1 = p_1->next;
+		}
+		return p_1;
+
+
+	}
+};
 
 
 
