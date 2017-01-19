@@ -1570,9 +1570,215 @@ public:
 };
 
 
+//一个整型数组里除了两个数字之外，其他的数字都出现了两次。
+//请写程序找出这两个只出现一次的数字。
+class Solution {
+public:
+	void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
+		int size = data.size();
+		int n_xor_1 = 0, n_xor_2 = 0;
+		int flag = 1;
+		for (int i = 0; i < size; i++)
+		{
+			n_xor_1 ^= data[i];
+		}
+
+		while ((n_xor_1 & flag) == 0)
+		{
+			flag = (flag << 1);
+		}
+
+		n_xor_2 = n_xor_1;
+		for (int i = 0; i < size; i++)
+		{
+			if ((data[i] & flag) == 0)
+				n_xor_1 ^= data[i];
+			else
+				n_xor_2 ^= data[i];
+		}
+		*num1 = n_xor_1;
+		*num2 = n_xor_2;
+
+	}
+};
+
+//小明很喜欢数学,有一天他在做数学作业时,要求计算出9~16的和,
+//他马上就写出了正确答案是100。但是他并不满足于此,他在想究
+//竟有多少种连续的正数序列的和为100(至少包括两个数)。没多久,
+//他就得到另一组连续正数和为100的序列:18,19,20,21,22。现在把
+//问题交给你,你能不能也很快的找出所有和为S的连续正数序列? Good Luck! 
+//输出描述:
+//输出所有和为S的连续正数序列。序列内按照从小至大的顺序，
+//序列间按照开始数字从小到大的顺序
+
+class Solution {
+public:
+	vector<vector<int> > FindContinuousSequence(int sum) {
+		//2 * an = x + y - 1
+		//2 * a1 = x - y + 1
+		//x * y = 2 * sum
+		//x > y
+
+		//(x - y)为大于0的奇数
+		//(x + y)为大于1的奇数
+		//x * y = 2 * sum,其中（1<=y<=sqrt(2 * sum)）
+		vector<vector<int> > data;
+		if(sum < 3)
+			 return data;
+
+		int s = (2 * sum);
+		int x = 0;
+		int y = sqrt(s);
+		for (; y > 1; y--)
+		{
+			x = 0;
+			if (0 == s % y)
+			{
+				x = s / y;
+				if (((x + y) & 0x1) == 0 || ((x - y) & 0x1) == 0)
+					continue;
+			}
+			else
+				continue;
+
+			int a1 = (x - y + 1) / 2;
+			int an = (x + y - 1) / 2;
+			vector<int> v;
+			for (int i = a1; i <= an; i++)
+				v.push_back(i);
+			data.push_back(v);
+		}
+		return data;
+
+	}
+};
 
 
+//输入一个递增排序的数组和一个数字S，在数组中查找两个数，
+//是的他们的和正好是S，如果有多对数字的和等于S，输出两个数的乘积最小的。 
+//输出描述:
+//对应每个测试案例，输出两个数，小的先输出。
+class Solution {
+public:
+	vector<int> FindNumbersWithSum(vector<int> array,int sum) {
+		vector<int> res;
+		int size = array.size();
+		if (size < 2)
+			return res;
 
+		int i = 0;
+		int j = size - 1;
+		while(i < j)
+		{
+			int s = array[i] + array[j];
+			if (s > sum)
+				j--;
+			else if (s < sum)
+				i++;
+			else
+			{
+				res.push_back(array[i]);
+				res.push_back(array[j]);
+				break;
+			}
+		}
+		return res;
+
+	}
+};
+
+
+//汇编语言中有一种移位指令叫做循环左移（ROL），现在有个简单的任务，
+//就是用字符串模拟这个指令的运算结果。对于一个给定的字符序列S，
+//请你把其循环左移K位后的序列输出。例如，字符序列S=”abcXYZdef”,
+//要求输出循环左移3位后的结果，即“XYZdefabc”。是不是很简单？OK，搞定它！
+class Solution {
+public:
+	string LeftRotateString(string str, int n) {
+		int len = str.length();
+		if (len <= 1)
+			return str;
+
+		int m = n % len;
+		if (0 == m)
+			return str;
+		else
+		{
+			str += str;
+			return (str.substr(m, len));
+		}
+
+	}
+};
+
+
+//牛客最近来了一个新员工Fish，每天早晨总是会拿着一本英文杂志，
+//写些句子在本子上。同事Cat对Fish写的内容颇感兴趣，
+//有一天他向Fish借来翻看，但却读不懂它的意思。例如，
+//“student. a am I”。后来才意识到，这家伙原来把句子单词的
+//顺序翻转了，正确的句子应该是“I am a student.”。Cat对一一
+//的翻转这些单词顺序可不在行，你能帮助他么？
+class Solution {
+public:
+	string ReverseSentence(string str) {
+		int size = str.length();
+		if (size <= 1)
+			return str;
+
+		string rev = "";
+		str += " ";
+		int j = size;
+		for (int i = size - 1; i >= 0; i--)
+		{
+			if (str[i] == ' ')
+			{
+				rev += str.substr(i + 1, j - i);
+				j = i;
+			}
+		}
+		rev += str.substr(0, j);
+		return rev;
+
+	}
+};
+
+
+//LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2个大王,2个
+//小王(一副牌原本是54张^_^)...他随机从中抽出了5张牌,想测测自己的手
+//气,看看能不能抽到顺子,如果抽到的话,他决定去买体育彩票,嘿嘿！！
+//“红心A,黑桃3,小王,大王,方片5”,“Oh My God!”不是顺子.....LL不高
+//兴了,他想了想,决定大\小 王可以看成任何数字,并且A看作1,J为11,Q为12,
+//K为13。上面的5张牌就可以变成“1,2,3,4,5”(大小王分别看作2和4),
+//“So Lucky!”。LL决定去买体育彩票啦。 现在,要求你使用这幅牌模拟上
+//面的过程,然后告诉我们LL的运气如何。为了方便起见,你可以认为大小王是0。
+
+class Solution {
+public:
+	bool IsContinuous( vector<int> numbers ) {
+
+		if (numbers.size() != 5)
+			return false;
+		sort(numbers.begin(), numbers.end());
+
+		int cnt0 = 0;
+		int gap = 0;
+		for(int i = 0; i < 4; i++) 
+		{
+			if (numbers[i] == 0) 
+				++cnt0;
+			else if (numbers[i + 1] == numbers[i])
+				return false;
+			else
+				gap += (numbers[i + 1] - numbers[i] - 1);
+		}
+
+		if (cnt0 >= gap)
+			return true;
+		else
+			return false;
+
+	}
+};
 
 
 
