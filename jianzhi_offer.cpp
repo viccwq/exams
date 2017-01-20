@@ -1781,6 +1781,61 @@ public:
 };
 
 
+//求1+2+3+...+n，要求不能使用乘除法、for、while、
+//if、else、switch、case等关键字及条件判断语句（A?B:C）。
+class Solution {
+public:
+	int Sum_Solution(int n) {
+		int sum = 0;
+		n && (sum = (Sum_Solution(n - 1) + n));
+		return sum;
+	}
+
+};
+
+
+//写一个函数，求两个整数之和，要求在函数
+//体内不得使用+、-、*、/四则运算符号。
+class Solution {
+public:
+	int Add(int num1, int num2)
+	{
+		int bits = sizeof(int) * 4;
+		int flag = 0;
+		int shift = 1;
+		int ret = 0;
+		while (shift)
+		{
+			int temp1 = (num1 & shift);
+			int temp2 = (num2 & shift);
+			ret = ((temp1 ^ temp2) ^ flag) ^ ret;
+
+			shift = (shift << 1);
+			if ((temp1 && temp2) || (temp1 && flag) || (temp2 && flag) )
+				flag = shift;
+			else
+				flag = 0;
+		}
+		return ret;
+	}
+};
+
+
+class Solution {
+public:
+	//第一遍我是移位运算的，看了一下人家的，确实这样的效率会高些。。。
+	int Add(int num1, int num2){
+		int sum = 0;
+		do
+		{
+			sum = num1 ^ num2;
+			num2 = (num1 & num2)<<1;
+			num1 = sum;
+		} while(num2);
+		return sum;
+	}
+};
+
 
 
 
