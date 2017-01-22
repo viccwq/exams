@@ -1935,7 +1935,158 @@ public:
 };
 
 
+//给定一个数组A[0,1,...,n-1],请构建一个数组B[0,1,...,n-1],
+//其中B中的元素B[i]=A[0]*A[1]*...*A[i-1]*A[i+1]*...*A[n-1]。
+//不能使用除法。
+class Solution {
+public:
+	vector<int> multiply(const vector<int>& A) {
+		vector<int> B;
+		int size = A.size();
+		if (size <= 1)
+			return A;
 
+		int temp = 1;
+		B.push_back(1);
+		for (int i = 1; i < size; i++)
+		{
+			temp *= A[i - 1];
+			B.push_back(temp);
+		}
+
+		temp = 1;
+		for (int i = size - 2; i >= 0; i--)
+		{
+			temp *= A[i + 1];
+			B[i] *= temp;
+		}
+		return B;
+	}
+};
+
+
+//请实现一个函数用来匹配包括'.'和'*'的正则表达式。
+//模式中的字符'.'表示任意一个字符，而'*'表示它前
+//面的字符可以出现任意次（包含0次）。 在本题中，匹
+//配是指字符串的所有字符匹配整个模式。例如，字符串
+//"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和
+//"ab*a"均不匹配
+class Solution {
+public:
+	bool match(char* str, char* pattern)
+	{
+		if (NULL == str || NULL == pattern)
+			return false;
+		return ismatch(str, pattern);
+	}
+
+
+	bool ismatch(char* str, char* pattern)
+    {
+        if(str[0] == '\0' && pattern[0] == '\0')
+            return true;
+		if (str[0] != '\0' && pattern[0] == '\0')
+			return false;
+
+		if (pattern[1] == '*')
+		{
+			if (str[0] == pattern[0] || (pattern[0] == '.' && str[0] != '\0'))
+				return ismatch(str + 1, pattern) || ismatch(str, pattern + 2);
+			else
+				return ismatch(str, pattern + 2);
+		}
+
+		if (str[0] == pattern[0] || (pattern[0] == '.' && str[0] != '\0'))
+			return ismatch(str + 1, pattern + 1);
+		else
+			return false;
+    }
+
+};
+
+//请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
+//例如，字符串"+100","5e2","-123","3.1416"和"-1E-16"都表示数值。
+//但是"12e","1a3.14","1.2.3","+-5"和"12e+4.3"都不是。
+class Solution {
+public:
+	bool isNumeric(char* string)
+	{
+		if (string[0] == '\0')
+			return false;
+
+		int index = check_e(string);
+		if (index < 0)
+			return false;
+		else if (index > 0)
+		{
+			string[index] = '\0';
+			return check(string, 2) && check(string + index + 1, 1);
+		}
+		else
+			return check(string, 2);
+	}
+
+	bool check(char* string, int flag)
+	{
+		int count = 0;
+		if (!(string[0] >= '0' && string[0] <= '9') && (string[0] != '+') && (string[0] != '-'))
+			return false;
+
+		for (int i = 1; string[i] != '\0'; i++)
+		{
+			if (string[i] < '0' || string[i] > '9')
+			{
+				if (string[i] == '.')
+					count++;
+				else
+					return false;
+			}
+			if (count >= flag)
+				return false;
+		}
+		return true;
+	}
+
+	//返回唯一的字母e所在的位置
+	int check_e(char* string)
+	{
+		if (string[0] == 'e' || string[0] == 'E')
+			return -1;
+
+		int index = 0;
+		int count = 0;
+		for (int i = 1; string[i] != '\0'; i++)
+		{
+			if (string[i] >= 'a' && string[i] <= 'z' )
+			{
+				if (string[i] == 'e')
+				{
+					index = i;
+					count++;
+				}
+				else
+					return -1;
+			}
+
+			if (string[i] >= 'A' && string[i] <= 'Z' )
+			{
+				if (string[i] == 'E')
+				{
+					index = i;
+					count++;
+				}
+				else
+					return -1;
+			}
+		}
+		//如果有多e
+		if (count > 1)
+			return -1;
+		else
+			return index;
+	}
+
+};
 
 
 
