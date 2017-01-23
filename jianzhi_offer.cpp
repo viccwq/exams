@@ -2089,29 +2089,40 @@ public:
 };
 
 
+//请实现一个函数用来找出字符流中第一个只出现一次的字符。
+//例如，当从字符流中只读出前两个字符"go"时，第一个只出
+//现一次的字符是"g"。当从该字符流中读出前六个字符“google"
+//时，第一个只出现一次的字符是"l"。 
+//输出描述:
+//如果当前字符流没有存在出现一次的字符，返回#字符。
+class Solution
+{
+public:
+	//Insert one char from stringstream
+	vector<char> buff;
+	int count[256] = {0};
+	void Insert(char ch)
+	{
+		buff.push_back(ch);
+		count[ch]++;
+	}
+	//return the first appearence once char in current stringstream
+	char FirstAppearingOnce()
+	{
+		int size = buff.size();
+		for (int i = 0; i < size; i++)
+		{
+			char ch = buff[i];
+			if (count[ch] == 1)
+				return ch;
+		}
+		return '#';
+	}
+
+};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//删除链表中重复的结点
-//在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。 例如，链表1->2->3->3->4->4->5 处理后为 1->2->5
-
+//一个链表中包含环，请找出该链表的环的入口结点。
 /*
 struct ListNode {
     int val;
@@ -2121,6 +2132,95 @@ struct ListNode {
     }
 };
 */
+class Solution {
+public:
+	vector<ListNode *> p;
+    ListNode* EntryNodeOfLoop(ListNode* pHead)
+    {
+		if (!pHead->next)
+			return NULL;
+
+		ListNode* front = pHead;
+		ListNode* temp = NULL;
+		while (NULL != front->next)
+		{
+			temp = front->next;
+			front->next = NULL;
+
+			front = temp;
+			p.push_back(temp);
+		}
+
+		temp = pHead;
+		int i = 0;
+		while (NULL == temp->next)
+		{
+			temp->next = p[i++];
+			temp = temp->next;
+		}
+		return front;
+
+    }
+
+};
+
+//在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，
+//重复的结点不保留，返回链表头指针。 例如，
+//链表1->2->3->3->4->4->5 处理后为 1->2->5
+/*
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) :
+        val(x), next(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    ListNode* deleteDuplication(ListNode* pHead)
+    {
+		if (NULL == pHead)
+			return NULL;
+
+		ListNode h(-1);
+		ListNode* ph = &h;
+		ph->next = pHead;
+
+		ListNode* p1 = NULL;
+		ListNode* p2 = NULL;
+		int data = -1;
+		while ((p1 = ph->next) && (p2 = p1->next))
+		{
+			if (p1->val == p2->val)
+			{
+				ph->next = p2->next;
+				data = p1->val;
+				delete p1;
+				delete p2;
+				continue;
+			}
+
+			if (data == p1->val)
+			{
+				ph->next = p2;
+				delete p1;
+			}
+			else
+				ph = p1;
+
+		}
+
+		if (p1 && (data == p1->val))
+		{
+			ph->next = NULL;
+			delete p1;
+		}
+		return h.next;
+
+    }
+};
+
 class Solution {
 public:
     ListNode* deleteDuplication(ListNode* pHead)
@@ -2174,6 +2274,84 @@ public:
 
     }
 };
+
+
+//给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。
+//注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。
+/*
+struct TreeLinkNode {
+    int val;
+    struct TreeLinkNode *left;
+    struct TreeLinkNode *right;
+    struct TreeLinkNode *next;
+    TreeLinkNode(int x) :val(x), left(NULL), right(NULL), next(NULL) {
+        
+    }
+};
+*/
+class Solution {
+public:
+	TreeLinkNode* GetNext(TreeLinkNode* pNode)
+	{
+		if (NULL == pNode)
+			return NULL;
+		
+		TreeLinkNode* p = NULL;
+
+		//1、有右子树的
+		if (pNode->right != NULL)
+		{
+			p = pNode->right;
+			while (p->left != NULL)
+				p = p->left;
+			return p;
+		}
+
+		//2、没有右子树的
+		p = pNode->next;
+		while (p != NULL)
+		{
+			TreeLinkNode *proot = p->next;
+			if (proot->left == p)
+				return proot;
+			p = p->next;
+		}
+		return NULL;
+
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
