@@ -2324,6 +2324,191 @@ public:
 
 
 
+//请实现一个函数按照之字形打印二叉树，即第一行
+//按照从左到右的顺序打印，第二层按照从右至左的
+//顺序打印，第三行按照从左到右的顺序打印，其他
+//行以此类推。
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    vector<vector<int> > Print(TreeNode* pRoot) {
+		vector<vector<int> > ret;
+        if (NULL == pRoot)
+			return ret;
+		queue<TreeNode * > q;
+		q.push(pRoot);
+
+		int count = 1;
+		bool flag = false;
+		while (count)
+		{
+			//count of current lay
+			int cnt = count;
+			//reset the count of next lay
+			count = 0;
+			//data of current lay
+			vector<int> data;
+			for (int i = 0; i < cnt; i++)
+			{
+				TreeNode* p = NULL;
+				//get the node from left to right in current lay
+				p = q.front();
+				data.push_back(p->val);
+				if (p->left)
+				{
+					q.push(p->left);
+					count++;
+				}
+				if (p->right)
+				{
+					q.push(p->right);
+					count++;
+				}
+				q.pop();
+			}
+
+			if (flag)
+				std::reverse(data.begin(), data.end());
+			ret.push_back(data);
+			//flip
+			flag = !flag;		
+		}
+
+		return ret;
+    }
+    
+};
+
+
+//从上到下按层打印二叉树，同一层结点从左至右输出。每一层输出一行
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+        vector<vector<int> > Print(TreeNode* pRoot) {
+			vector<vector<int> > ret;
+			if (NULL == pRoot)
+				return ret;
+			queue<TreeNode * > q;
+			q.push(pRoot);
+
+			int count = 1;
+			while (count)
+			{
+				//count of current lay
+				int cnt = count;
+				//reset the count of next lay
+				count = 0;
+				//data of current lay
+				vector<int> data;
+				for (int i = 0; i < cnt; i++)
+				{
+					TreeNode* p = NULL;
+					//get the node from left to right in current lay
+					p = q.front();
+					data.push_back(p->val);
+					if (p->left)
+					{
+						q.push(p->left);
+						count++;
+					}
+					if (p->right)
+					{
+						q.push(p->right);
+						count++;
+					}
+					q.pop();
+				}
+				ret.push_back(data);	
+			}
+
+			return ret;        
+        }
+    
+};
+
+//请实现两个函数，分别用来序列化和反序列化二叉树
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    char* Serialize(TreeNode *root) {
+		if (NULL == root)
+			return NULL;
+		string str = serialized(root) + "*";
+		return const_cast<char*>(str.c_str());        
+    }
+
+    TreeNode* Deserialize(char *str) {
+		TreeNode* root = NULL;
+		if(str != NULL)
+			deserialized(root, str);
+		return root;
+    }
+
+	string serialized(TreeNode* root)
+	{
+		if (root == NULL)
+			return "#,";
+		string res = std::to_string(root->val) + ",";
+		res += serialized(root->left);
+		res += serialized(root->right);
+		return res;
+	}
+
+	void deserialized(TreeNode*& root, char*& str)
+	{
+		if(*str == '*')
+			return ;
+		if(*str == '#')
+		{
+			root = NULL;
+			str += 2;
+			return ;
+		}
+		root = new TreeNode(num(str));
+		deserialized(root->left, str);
+		deserialized(root->right, str);
+	}
+
+	int num(char*& str)
+	{
+		int res = 0;
+		char *p = str;
+		while(*p != ',')
+			p++;
+		//convert string to int
+		*p = '\0';
+		res = atoi(str);
+		str = p + 1;
+		return res;
+	}
+};
 
 
 
