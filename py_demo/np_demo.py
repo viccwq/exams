@@ -15,9 +15,9 @@ def demo_1():
     print("====array 3x3====")
     arr.shape = (3,3)
     print arr
-##数据类型
+    ##数据类型
     print arr.dtype
-##所有数据类型
+    ##所有数据类型
     print set(np.typeDict.values())
 
 def demo_2():
@@ -34,9 +34,46 @@ def demo_2():
     arr = np.zeros((2,3))
     print arr
 
+def func3(i,j):
+    return (i+1)*(j+1)
+def demo_3():
+    arr = np.fromfunction(func2, (9,4))
+    print arr
+
+#存取元素
+def demo_4():
+    arr = np.arange(10, 0, -1)
+    print arr
+    #取元素   
+    print arr[0]
+    print arr[1:3]
+    print arr[:3]    
+    #存元素    
+    arr[1:3] = 100,200
+    print arr
+    #通过切片产生的新数组arr_1和原数组共享同一块存储空间
+    arr_1 = arr[1:3]
+    arr_1[0] = 500
+    print arr
+    #通过切片产生的新数组arr_2和原数组独立空间
+    arr_2 = arr[[1,2]]
+    arr_2[0] = 600
+    print arr
+    
+    
+    #int数组作为下标
+    print "int数组作为下标"
+    arr = np.arange(10, 0, -1)
+    print arr[np.array([0,0,1,-1])]
+    #bool数组作为下标
+    print "bool数组作为下标"
+    arr = np.arange(5, 0, -1)
+    print arr[np.array([False,True, False, True, False])]
+
+
 
 if __name__ == '__main__':
-    demo_2()
+    demo_4()
     
 
     
