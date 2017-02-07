@@ -38,8 +38,9 @@ objs : $(OBJS)
 rebuild: veryclean everything
                 
 clean :
-	rm -fr *.so
-	rm -fr *.o
+#	rm -fr *.so
+#	rm -fr *.o
+	rm -fr $(OBJS)
     
 veryclean : clean
 	rm -fr $(TARGET)
