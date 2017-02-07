@@ -2511,18 +2511,272 @@ public:
 };
 
 
+//给定一颗二叉搜索树，请找出其中的第k大的结点。例如，
+//5 / \ 3 7 /\ /\ 2 4 6 8 中，按结点数值大小顺序第三
+//个结点的值为4。
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    TreeNode* KthNode(TreeNode* pRoot, int k)
+    {
+        
+    }
+
+    
+};
+
+//如何得到一个数据流中的中位数？如果从数据流中读出
+//奇数个数值，那么中位数就是所有数值排序之后位于中
+//间的数值。如果从数据流中读出偶数个数值，那么中位
+//数就是所有数值排序之后中间两个数的平均值。
+class Solution {
+public:
+    vector<int> L;
+    vector<int> H;
+
+    void Insert(int num)
+    {
+    	if (L.size() == 0 && H.size() == 0)
+        {
+            L.push_back(num);
+            return;
+        }
+        
+        while (!L.empty())
+        {
+            int temp = L.back();
+            if (temp > num)
+            {
+                H.push_back(temp);
+                L.pop_back();
+            }
+            else
+                break;
+        }
+        
+        while (!H.empty())
+        {
+            int temp = H.back();
+            if (temp < num)
+            {
+                L.push_back(temp);
+                H.pop_back();
+            }
+            else
+                break;
+        }
+        
+        L.push_back(num);
+    }
+
+    double GetMedian()
+    { 
+	    int size_l = L.size();
+	    int size_h = H.size();
+        int all  = size_l + size_h;
+        if (all == 0)
+            return 0.0;
+        
+        
+        if (size_l == size_h)
+            return ((L.back() + H.back() + 0.0) / 2.0);
+        
+        if (all % 2 == 0)
+        {
+            int a = 0, b = 0;
+            if (size_l > size_h)
+            {
+                a = L[all / 2];
+                b = L[all / 2 - 1];
+            }
+            else
+            {
+                a = H[all / 2];
+                b = H[all / 2 - 1];
+            }                
+            return ((a + b + 0.0) / 2.0);            
+        }
+        else
+        {
+            return (size_l > size_h)?(L[(all - 1)/2]):(H[(all - 1)/2]) * 1.0;
+        }    
+        
+ 
+    }
+
+};
 
 
+//给定一个数组和滑动窗口的大小，找出所有滑动窗口
+//里数值的最大值。例如，如果输入数组{2,3,4,2,6,2,5,1}及
+//滑动窗口的大小3，那么一共存在6个滑动窗口，
+//他们的最大值分别为{4,4,6,6,6,5}； 
+//针对数组{2,3,4,2,6,2,5,1}的滑动窗口有以下6个： 
+//{[2,3,4],2,6,2,5,1}， {2,[3,4,2],6,2,5,1}，
+//{2,3,[4,2,6],2,5,1}， {2,3,4,[2,6,2],5,1}，
+//{2,3,4,2,[6,2,5],1}， {2,3,4,2,6,[2,5,1]}。
+class Solution {
+public:
+    vector<int> maxInWindows(const vector<int>& num, unsigned int size)
+    {
+        vector<int> ret;
+        int C = num.size();
+        if (C < (int)size || size == 0)
+            return ret;
+        
+        if (size == 1)
+            return num;
+        //get the maximum val from 0 to (size-1)
+        ret.push_back(local_max(num, 0, (int)size));
+        int max_t = num[0];
+        for (int i = (int)size, j = 0; i < C; i++, j++)
+        {
+            int latest_max = ret.back();
+            //compare current val with the latest maximum val
+            if (num[i] >= latest_max)
+			{
+                ret.push_back(num[i]);
+                continue;
+            }           
+            
+            //find the local maximum val when the first element 
+            //is the maximum in a window 
+            if (latest_max != num[j])
+                max_t = latest_max;
+            else
+                max_t = local_max(num, j + 1, (int)(size - 1));
+            
+            ret.push_back(max_t);
+        }
+        return ret;
+    }
+    
+    int local_max(const vector<int>& num, int idx, int size)
+    {
+        int max = INT_MIN;
+        for (int i = 0; i < size; i++)
+        {
+            if (num[i+idx] > max)
+                max = num[i+idx];
+        }
+        return max;
+    }
+};
 
 
+//请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所
+//有字符的路径。路径可以从矩阵中的任意一个格子开始，每一步可以在
+//矩阵中向左，向右，向上，向下移动一个格子。如果一条路径经过了矩
+//阵中的某一个格子，则该路径不能再进入该格子。 
+//例如 a b c e s f c s a d e e 矩阵中包含一条字符串"bccced"的路
+//径，但是矩阵中不包含"abcb"路径，因为字符串的第一个字符b占据了矩
+//阵中的第一行第二个格子之后，路径不能再次进入该格子。
+//
+//
+class Solution {
+public:
+    
+    int *used = NULL;
+    
+    bool hasPath(char* matrix, int rows, int cols, char* str)
+    {
+    	if (rows < 1 || cols < 1)
+            return false;
+        
+        int len = strlen(matrix);
+        if (len < 1 || (len != rows * cols))
+            return false;
+        
+        used = new int[len];
+        memset(used, 0, sizeof(int)*len);
+        bool ret = false;
+        for (int i = 0; i < rows; i++)
+        {    
+            for (int j = 0; j < cols; j++)
+            {
+            	ret = test(matrix, rows, cols, i, j, str);
+            	if (ret)
+                    break;
+        	}
+            //调了半天，犯了低级错误，这个break没加
+            if (ret)
+                break;
+        }
+        delete [] used;
+        return ret;        
+    }
+    
+    bool test(char* matrix, int rows, int cols, int i, int j, char* str)
+    {
+        if ('\0' == *str)
+            return true;
+  
+
+        if (i < 0 || i >= rows || j < 0 || j >= cols)
+            return false;   
+        
+        int idx = i * cols + j;
+        bool ret = false;        
+        if (matrix[idx] == *str && used[idx] == 0)
+        {
+            used[idx] = 1;
+            ret = test(matrix, rows, cols, i + 1, j, str + 1)
+                ||　test(matrix, rows, cols, i - 1, j, str + 1)
+                ||　test(matrix, rows, cols, i, j + 1, str + 1)
+                ||　test(matrix, rows, cols, i, j - 1, str + 1);
+            used[idx] = 0;
+        }
+        
+        return ret;        
+    }    
 
 
+};
 
-
-
-
-
-
+//地上有一个m行和n列的方格。一个机器人从坐标0,0的格子开始移动，
+//每一次只能向左，右，上，下四个方向移动一格，但是不能进入行坐
+//标和列坐标的数位之和大于k的格子。 例如，当k为18时，机器人能够
+//进入方格（35,37），因为3+5+3+7 = 18。但是，它不能进入方格
+//（35,38），因为3+5+3+8 = 19。请问该机器人能够达到多少个格子？
+class Solution {
+public:
+    int movingCount(int threshold, int rows, int cols) {
+        int *flag = new int[rows*cols];
+        return helper(0, 0, rows, cols, flag, threshold);
+    }
+ 
+    int helper(int i, int j, int rows, int cols, int *flag, int threshold) 
+    {
+        if (i < 0 || i >= rows || j < 0 || j >= cols \
+            || numSum(i) + numSum(j)  > threshold \
+            || flag[i * cols + j] == 1) 
+            return 0;    
+        flag[i * cols + j] = 1;
+        return helper(i - 1, j, rows, cols, flag, threshold)
+            + helper(i + 1, j, rows, cols, flag, threshold)
+            + helper(i, j - 1, rows, cols, flag, threshold)
+            + helper(i, j + 1, rows, cols, flag, threshold)
+            + 1;
+    }
+ 
+    int numSum(int i) 
+    {
+        int sum = 0;
+        do{
+            sum += i%10;
+        }while((i = i/10) > 0);
+        return sum;
+    }
+};
 
 
 
