@@ -70,10 +70,16 @@ def demo_4():
     arr = np.arange(5, 0, -1)
     print arr[np.array([False,True, False, True, False])]
 
-
+#½á¹¹Ìå
+def demo_5():
+    person = np.dtype({
+        'names':['name','age','weight'], 'formats':['S32','i','f']},
+        align = True)
+    a = np.array([('Li', 31,58.4),('Wang',33,49.0)], dtype = person)
+    print a[0]
 
 if __name__ == '__main__':
-    demo_4()
+    demo_5()
     
 
     
