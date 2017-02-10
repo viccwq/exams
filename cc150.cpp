@@ -484,7 +484,13 @@ public:
             p = p->next;
         }
 
-        p->next=NULL;
+		if (flag)
+        {    
+            p->next = new ListNode(flag);
+        	p->next->next = NULL;
+        }
+        else
+	        p->next=NULL;
         return node.next;
     }
 };
@@ -560,10 +566,22 @@ public:
         }
         if (0 == idx)
             return ret;
-        for (int i = 0; i < idx; i++)
+        for (int i = 0; i < (idx / size); i++)
         {
+            //恍然大悟
+            //迭代器(start)和迭代器(end) - 构造一个初始值为[start,end)区间元素的Vector(注:半开区间).
+            //vector<int > vect(data.begin() + size * i, data.begin() + size * (i + 1) - 1);
+            vector<int > vect(data.begin() + size * i, data.begin() + size * (i + 1));
+            ret.push_back(vect);
         }
-
+        
+        if (0 != (idx % size))
+        { 
+            //vector<int > vect(data.begin() + size * (idx / size), data.end() - 1);
+            vector<int > vect(data.begin() + size * (idx / size), data.begin() + size * (idx / size) + (idx % size));
+            ret.push_back(vect);
+        }
+        return ret;
         
     }
 };

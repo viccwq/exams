@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 
 /*
 #define ADD(a, b) {\
@@ -256,8 +257,25 @@ int test_12()
 	return 0;
 }
 
+/*
+int test_13()
+{
+	printf("--------test_13--------\n");
+    vector<int> vect1;
+    for (int i = 0; i < 10; i++)
+        vect1.push_back(i);
+
+    vector<int> vect2(vect1.begin()+1, vect1.begin+9);
+    for (int i = 0; i < vect2.size(); i++)
+        count<<vect2[i]<<endl;
+
+    return 0;
+}
+*/
+
 int main()
 {
+/*    
     test_1();
     test_2();
     test_3();
@@ -269,6 +287,8 @@ int main()
     test_9();
     test_10();
     test_11();
+    */
     test_12();
+//    test_13();
     return 0;
 }
