@@ -588,6 +588,142 @@ public:
 
 
 
+//用两个栈来实现一个队列，完成队列
+//的Push和Pop操作。 队列中的元素为int类型。
+class Solution
+{
+public:
+    void push(int node) {
+        stack1.push(node);
+    }
+
+    int pop() {
+        if (stack2.empty())
+        {
+            while (!stack1.empty())    
+            {
+                int ret = stack1.top();
+                stack1.pop();
+                stack2.push(ret);
+            }
+        }
+        
+        if (stack2.empty())    
+            return -1;
+        else
+        {
+            int ret = stack2.top();
+            stack2.pop();
+            return ret;
+        }
+    }
+
+private:
+    stack<int> stack1;
+    stack<int> stack2;
+};
+
+
+
+//请编写一个程序，按升序对栈进行排序（即最大元素位于栈顶），
+//要求最多只能使用一个额外的栈存放临时数据，但不得将元素复制
+//到别的数据结构中。
+//给定一个int[] numbers(C++中为vector&ltint>)，其中第一个元
+//素为栈顶，请返回排序后的栈。请注意这是一个栈，意味着排序过
+//程中你只能访问到第一个元素。
+//测试样例：
+//[1,2,3,4,5]
+//返回：[5,4,3,2,1]
+class TwoStacks {
+public:
+    vector<int> twoStacksSort(vector<int> numbers) {
+        // write code here
+        int size = numbers.size();
+        if (size <= 1)
+            return numbers;
+
+        stack<int> ret;
+        ret.push(numbers[0]);
+        int i = 1;
+        while (i < size)
+        {
+            int val = numbers[i];
+
+            if (val >= ret.top())
+            {
+                //将待排序的数压栈
+                ret.push(val);
+                i++;
+                continue;
+            }
+
+            while (!ret.empty() && val < ret.top())
+            {
+                //将大于val的数依次出栈
+                numbers[i] = ret.top();
+                ret.pop();
+                i--;
+            }
+            ret.push(val);
+        }
+
+        vector<int > v(size);
+        i = 0;
+        while (!ret.empty())
+        {
+            v[i++] = ret.top();
+            ret.pop();
+        }
+        return v;
+
+    }
+};
+
+
+
+
+
+class TwoStacks {
+public:
+    vector<int> twoStacksSort(vector<int> numbers) {
+        // write code here
+        int size = numbers.size();
+        if (size <= 1)
+            return numbers;
+
+        vector<int> ret(size);
+        int i = 0;
+        int j = size - 1;
+        ret[j] = numbers[i];
+        i++;
+        while (i < size)
+        {
+            int val = numbers[i];
+
+            if (val >= ret[j])
+            {
+                //将待排序的数压栈
+                j--;
+                ret[j] = val;
+                i++;
+                continue;
+            }
+
+            while (j < size && val < ret[j])
+            {
+                //将大于val的数依次出栈
+                numbers[i] = ret[j];
+                j++;
+                i--;
+            }
+            j--;
+            ret[j] = val;
+            i++;
+        }
+        return ret;
+
+    }
+};
 
 
 
@@ -595,12 +731,47 @@ public:
 
 
 
+//  有家动物收容所只收留猫和狗，但有特殊的收养规则，收养人
+//有两种收养方式，第一种为直接收养所有动物中最早进入收容
+//所的，第二种为选择收养的动物类型（猫或狗），并收养该种
+//动物中最早进入收容所的。
+//  给定一个操作序列int[][2] ope(C++中为vector<vector<int>>)
+//代表所有事件。若第一个元素为1，则代表有动物进入收容所，第
+//二个元素为动物的编号，正数代表狗，负数代表猫；若第一个元素
+//为2，则代表有人收养动物，第二个元素若为0，则采取第一种收养
+//方式，若为1，则指定收养狗，若为-1则指定收养猫。请按顺序返回
+//收养的序列。若出现不合法的操作，即没有可以符合领养要求的动
+//物，则将这次领养操作忽略。
+//测试样例：
+//[[1,1],[1,-1],[2,0],[2,-1]]
+//返回：[1,-1]
+class CatDogAsylum {
+public:
+    vector<int> asylum(vector<vector<int> > ope) {
+        // write code here
+    }
+};
 
+//实现一个函数，检查二叉树是否平衡，平衡的定义如下，
+//对于树中的任意一个结点，其两颗子树的高度差不超过1。
+//给定指向树根结点的指针TreeNode* root，
+//请返回一个bool，代表这棵树是否平衡。
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
 
-
-
-
-
+class Balance {
+public:
+    bool isBalance(TreeNode* root) {
+        // write code here
+    }
+};
 
 
 
