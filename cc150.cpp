@@ -745,12 +745,58 @@ public:
 //测试样例：
 //[[1,1],[1,-1],[2,0],[2,-1]]
 //返回：[1,-1]
+
+
 class CatDogAsylum {
 public:
     vector<int> asylum(vector<vector<int> > ope) {
         // write code here
+
+        vector<int > ret;
+        int size = ope.size();
+        if (size <= 0)
+            return ret;
+
+        vector<int> animal;
+        for (int i = 0; i < size; i++)
+        {
+            if (ope[i][0] == 1)
+            {
+                animal.push_back(ope[i][1]);
+                continue;
+            }
+
+            if (ope[i][0] == 2 && !animal.empty())
+            {
+                int flag = ope[i][1];
+                if (flag == 0)
+                {
+                    ret.push_back(animal[0]);
+                    animal.erase(animal.begin());
+                }
+                else if (flag == (1) || flag  == (-1))//dog
+                {
+                    vector<int>::iterator iter;
+                    for(iter=animal.begin(); iter!=animal.end(); iter++)
+                    {
+                        if (*iter * flag > 0)    
+                        {
+                            ret.push_back(*iter);
+                            animal.erase(iter);
+                            break;
+                        }
+                    }
+                }
+                else
+                    ;
+            }
+        }
+        return ret;
+
+        
     }
 };
+
 
 //实现一个函数，检查二叉树是否平衡，平衡的定义如下，
 //对于树中的任意一个结点，其两颗子树的高度差不超过1。
@@ -770,12 +816,57 @@ class Balance {
 public:
     bool isBalance(TreeNode* root) {
         // write code here
+        if (root == NULL)
+            return true;
+        //两个孩子的深度相差不超过 
+        int ld = depth(root->left);
+        int rd = depth(root->right);
+        int delta = ld - rd;
+
+        if (delta > 1 || delta < -1)
+            return false;
+
+        //并且两个孩子都是平衡的
+        return (isBalance(root->left) && isBalance(root->right));
+        
     }
+
+    int depth(TreeNode* root)
+    {
+        if (root == NULL)
+            return 0;
+
+        int ld = depth(root->left);
+        int rd = depth(root->right);
+
+        if (ld > rd)
+            return (ld+1);
+        else 
+            return (rd+1);
+    }
+
 };
 
+//对于一个有向图，请实现一个算法，找出两点之间是
+//否存在一条路径。
+//给定图中的两个结点的指针UndirectedGraphNode* a,
+//UndirectedGraphNode* b(请不要在意数据类型，图是
+//有向图),请返回一个bool，代表两点之间是否存在一
+//条路径(a到b或b到a)。
 
+/*
+struct UndirectedGraphNode {
+    int label;
+    vector<struct UndirectedGraphNode *> neighbors;
+    UndirectedGraphNode(int x) : label(x) {}
+};*/
 
-
+class Path {
+public:
+    bool checkPath(UndirectedGraphNode* a, UndirectedGraphNode* b) {
+        // write code here
+    }
+};
 
 
 
