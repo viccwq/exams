@@ -870,6 +870,185 @@ public:
 
 
 
+//对于一个元素各不相同且按升序排列的有序序列，请编写一个算法，创建一
+//棵高度最小的二叉查找树。
+//给定一个有序序列int[] vals,请返回创建的二叉查找树的高度。
+
+class MinimalBST {
+public:
+	int buildMinimalBST(vector<int> vals) {
+		// write code here
+        int size = vals.size();
+        if (size == 0)
+            return 0;
+        else if (size <= 3)
+            return 2;
+        else
+            return tree_h(vals, 0, size - 1);
+	}
+
+	int tree_h(vector<int> &vals, int start, int end)
+	{
+        if (start == end)
+            return 1;
+
+		int mid =  (end - start) / 2 + start;
+        int left_h = 0;
+        if (mid > start)
+            left_h = tree_h(vals, start, mid - 1);
+        int right_h = 0;
+        if (mid < end)
+            right_h = tree_h(vals, mid + 1, end);
+        if (left_h > right_h)
+        {
+            return left_h + 1;
+        }
+        else
+            return right + 1;
+	}
+};
+
+//对于一棵二叉树，请设计一个算法，创建含有某一深度上所有结点的链表。
+//给定二叉树的根结点指针TreeNode* root，以及链表上结点的深度，请返回一个
+//链表ListNode，代表该深度上所有结点的值，请按树上从左往右的顺序链接，保
+//证深度不超过树的高度，树上结点的值为非负整数且不超过100000。
+
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+
+/*
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};*/
+class TreeLevel {
+public:
+int depth = 0;
+    ListNode *p_orig = NULL;
+    ListNode *p_node = NULL;
+
+    ListNode* getTreeLevel(TreeNode* root, const int dep) {
+        // write code here
+        if (root == NULL || dep <= 0)
+            return NULL;
+        p_orig = new ListNode(0);
+        p_node = p_orig;
+        save_node(root, dep);
+        p_node->next = NULL;
+        return p_orig->next;
+    }
+
+    void save_node(TreeNode* root, int dep)
+    {
+        if (NULL == root)
+            return;
+        depth++;
+        if (depth == dep)
+        {
+            p_node->next = new ListNode(root->val);
+            p_node = p_node->next;
+        }
+        save_node(root->left, dep);
+        save_node(root->right, dep);
+        depth--;
+    }
+};
+
+
+//请实现一个函数，检查一棵二叉树是否为二叉查找树。
+//给定树的根结点指针TreeNode* root，请返回一个bool，代表该树是否为二叉查找树。
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+
+class Checker {
+public:
+    bool checkBST(TreeNode* root) {
+        // write code here
+        if (NULL == root)
+            return false;
+        vector<int> v;
+        browse(root, v);
+        for (int i = v.size() - 1; i > 0; i--)
+        {
+            if (v[i] < v[i - 1])
+                return false;
+        }
+        return true;
+    }
+
+    void browse(TreeNode *root, vector<int> &v)
+    {
+        if (NULL == root)
+            return;
+        browse(root->left, v);
+        v.push_back(root->val);
+        browse(root->right, v);
+    }
+
+};
+
+
+//请设计一个算法，寻找二叉树中指定结点的下一个结点（即中序遍历的后继）。
+//给定树的根结点指针TreeNode* root和结点的值int p，请返回值为p的结点的后继结点
+//的值。保证结点的值大于等于零小于等于100000且没有重复值，若不存在后继返回-1。
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};*/
+
+class Successor {
+public:
+    int findSucc(TreeNode* root, int p) {
+        // write code here
+        int ret = -1;
+        if (NULL == root)
+            return ret;        
+        find(root, p, ret);
+        return ret;
+    }
+
+    void find(TreeNode *root, const int p, int &ret)
+    {
+        if (NULL == root)
+            return;
+        static int flag = 0;
+
+        if (flag == 2)
+            return;
+        find(root->left, p, ret);
+
+        if (flag == 2)
+            return;
+        if (flag == 1)
+        {
+            ret = root->val;
+            flag  = 2;
+        }
+        if (root->val == p)
+            flag = 1;
+        find(root->right, p, ret);
+    }
+};
 
 
 
