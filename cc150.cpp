@@ -1020,33 +1020,28 @@ class Successor {
 public:
     int findSucc(TreeNode* root, int p) {
         // write code here
-        int ret = -1;
         if (NULL == root)
-            return ret;        
-        find(root, p, ret);
-        return ret;
+            return -1;        
+        int flag = 0;
+        return find(root, p, flag);
     }
 
-    void find(TreeNode *root, const int p, int &ret)
+    int find(TreeNode *root, const int p, int &flag)
     {
         if (NULL == root)
-            return;
-        static int flag = 0;
+            return -1;
 
-        if (flag == 2)
-            return;
-        find(root->left, p, ret);
-
-        if (flag == 2)
-            return;
-        if (flag == 1)
-        {
-            ret = root->val;
-            flag  = 2;
-        }
-        if (root->val == p)
+        int ret = -1; 
+        ret = find(root->left, p, flag);
+        if(ret != -1)
+            return ret;
+        if(flag)
+            return root->val;
+        if(root->val == p)
             flag = 1;
-        find(root->right, p, ret);
+
+        ret = find(root->right, p, flag);
+        return ret;
     }
 };
 
