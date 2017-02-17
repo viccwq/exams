@@ -273,6 +273,34 @@ int test_13()
 }
 */
 
+int test_14(int n, int m, int j, int i)
+{
+	printf("--------test_14--------\n");
+    int mask = (1 << (i - j + 1)) - 1;
+    //将多m中余的位置0
+    int temp = m & mask;
+	printf("temp = %d, mask= 0x%x\n", temp, mask);
+    temp = (temp << j);
+    mask = (mask << j);
+	printf("temp = %d, mask= 0x%x, ret = %d\n", temp, mask, ((n & ~mask) | temp));
+    return ((n & ~mask) | temp);
+}
+
+int test_15()
+{
+	printf("--------test_15--------\n");
+    int temp = 0;
+    for (int i = 1584012; i > 0; i--)
+    {
+        temp = 1584012 % i;
+        if (temp == 0)
+            printf("%d * %d\n", i, (1584012/i));
+    }
+
+    return 0;
+}
+
+
 int main()
 {
 /*    
@@ -290,5 +318,7 @@ int main()
     */
     test_12();
 //    test_13();
+    test_14(28679,205, 3,11);
+    test_15();
     return 0;
 }
