@@ -1045,7 +1045,91 @@ public:
     }
 };
 
+//有一个正整数，请找出其二进制表示中1的个数相同、且大小最接近的那两个数。(一个略大，一个略小)
+//    给定正整数int x，请返回一个vector，代表所求的两个数（小的在前）。保证答案存在。
+//    测试样例：
+//    2
+//    返回：[1,4]
+class CloseNumber {
+public:
+    vector<int> getCloseNumber(int x) {
+        // write code here
+    }
+};
 
+
+//编写一个函数，确定需要改变几个位，才能将整数A转变成整数B。
+//    给定两个整数int A，int B。请返回需要改变的数位个数。
+//    测试样例：
+//    10,5
+//    返回：4
+
+class Transform {
+public:
+    int calcCost(int A, int B) {
+        // write code here
+        int C = A ^ B;
+        int count = 0;
+        while (C)
+        {
+            count++;
+            C &= (C - 1);
+        }
+        return count;
+    }
+};
+
+// 请编写程序交换一个数的二进制的奇数位和偶数位。（使用越少的指令越好）
+//     给定一个int x，请返回交换后的数int。
+//     测试样例：
+//     10
+//     返回：5
+
+class Exchange {
+public:
+    int exchangeOddEven(int x) {
+        // write code here
+        int odd = ((0x55555555 & x) << 1);
+        int even = ((0xAAAAAAAA & x) >> 1);
+        return (odd | even);
+    }
+};
+
+// 数组A包含了0到n的所有整数，但其中缺失了一个。对于这个问题，我们设定限制，使得
+//一次操作无法取得数组number里某个整数的完整内容。唯一的可用操作是询问数组中第i个
+//元素的二进制的第j位(最低位为第0位)，该操作的时间复杂度为常数，请设计算法，在O(n)
+//的时间内找到这个数。
+//     给定一个数组number，即所有剩下的数按从小到大排列的二进制各位的值，如A[0][1]
+//表示剩下的第二个数二进制从低到高的第二位。同时给定一个int n，意义如题。请返回缺失
+//的数。
+//     测试样例：
+//     [[0],[0,1]]
+// 返回：1
+
+class Finder {
+public:
+    int findMissing(vector<vector<int> > numbers, int n) {
+        // write code here
+    }
+};
+
+
+// 有一个单色屏幕储存在一维数组中，其中数组的每个元素代表连续的8位的像素的值，
+//请实现一个函数，将第x到第y个像素涂上颜色(像素标号从零开始)，并尝试尽量使用
+//最快的办法。
+//     给定表示屏幕的数组screen(数组中的每个元素代表连续的8个像素，且从左至
+//右的像素分别对应元素的二进制的从低到高位)，以及int x,int y，意义如题意所述，
+//保证输入数据合法。请返回涂色后的新的屏幕数组。
+//     测试样例：
+//     [0,0,0,0,0,0],0,47
+//     返回：[255,255,255,255,255,255]
+
+class Render {
+public:
+    vector<int> renderPixel(vector<int> screen, int x, int y) {
+        // write code here
+    }
+};
 
 
 
