@@ -1110,6 +1110,15 @@ class Finder {
 public:
     int findMissing(vector<vector<int> > numbers, int n) {
         // write code here
+        int i = 0;
+        for (i = 0; i < n; i++)
+        {
+            if ((i & 1) != numbers[i][0])
+            {
+                break;
+            }
+        }
+        return i;
     }
 };
 
