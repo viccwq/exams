@@ -1137,6 +1137,29 @@ class Render {
 public:
     vector<int> renderPixel(vector<int> screen, int x, int y) {
         // write code here
+        //体重1bit表示一个像素点
+        vector<int> ret(screen);
+        for (int i = (x / 8); i < ((y + 1) / 8); i++)
+        {
+            ret[i] = 0xff;
+        }
+ 
+        int idx;
+        idx = x % 8;
+        if (idx)
+        {
+            unsigned int temp = pow(2, (8 - idx)) - 1;
+            ret[x / 8] = screen[x / 8] | (temp << idx);
+        }
+ 
+ 
+        idx = (y + 1) % 8;
+        if (idx)
+        {
+            unsigned int temp = pow(2, idx) - 1;
+            ret[(y + 1) / 8] = screen[(y + 1) / 8] | temp;
+        }
+        return ret;       
     }
 };
 
