@@ -48,3 +48,12 @@ if __name__ == '__main__':
             cv2.destroyAllWindows()
             break
     cv2.destroyAllWindows()
+    
+    
+    
+    
+    
+    
+    
+#reference
+#http://blog.csdn.net/gjy095/article/details/9192299
