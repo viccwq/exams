@@ -31,6 +31,26 @@ def pixel_eidt(src_file, dst_file):
     #cv2.destroyWindow(src_file)
     return
 
+def pixel_eidt_2(src_file, dst_file):
+    #print "souce image is %s"%(src_file)
+    #print "destination image is %s"%(dst_file)
+    #img
+    src_img = cv2.imread(src_file, 0)
+    #print (src_img.shape)
+    #print (type(src_img))
+    
+    (height, width) = src_img.shape
+    for i in range(0, height):
+        for j in range(width-31, width):
+            #print (src_img[i, j ,:])
+            src_img[i, j] = (0)
+            
+    cv2.imwrite(dst_file, cv2.flip(src_img, 0))        
+    #cv2.imshow(src_file, src_img)
+    #cv2.waitKey(0)
+    #cv2.destroyWindow(src_file)
+    return
+
 if __name__ == '__main__':
     #print ("%d"%len(sys.argv))
     #get current dir
@@ -66,7 +86,13 @@ if __name__ == '__main__':
         print "\""+output_dir+"\" is not exist"
         os.makedirs(output_dir)
         print "\""+output_dir+"\" is created"           
-        
+    
+    print "Please choose the action:"
+    print "1. deleted the white strip in the left"
+    print "2. deleted the white strip in the right"
+    str = raw_input("input:")
+    mode = int(str)
+    print "choosed %d"%mode
     index=0
     for file in os.listdir(input_dir):
         if os.path.isfile(os.path.join(input_dir,file)):
@@ -76,8 +102,15 @@ if __name__ == '__main__':
                 print file+" ==> "+rename_file
                 #shutil.copy(os.path.join(input_dir,file), \
                 #            os.path.join(output_dir, rename_file))
-                pixel_eidt(os.path.join(input_dir,file), \
+                if 1 == mode:
+                    pixel_eidt(os.path.join(input_dir,file), \
                             os.path.join(output_dir, rename_file))
+                elif 2 == mode:
+                    pixel_eidt_2(os.path.join(input_dir,file), \
+                            os.path.join(output_dir, rename_file))
+                else:
+                    exit()
+                        
 
             
         
