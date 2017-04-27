@@ -20,6 +20,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <iostream>
+using namespace std;
+//c和C++程序员面试秘籍
+//chapter6 28th
+
+
+
 //链表排序
 
 
@@ -105,6 +112,8 @@ int main()
     a.PrintStr();
     b.PrintStr();
     c.PrintStr();
+    cout<<"test for iostream"<<endl;
+
     return 0;
 } 
 
@@ -114,3 +123,4 @@ int main()
 //什么是过度拟合
 
 //单线程的实现
+//利用struct实现class的功能
