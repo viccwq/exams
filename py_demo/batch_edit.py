@@ -93,11 +93,14 @@ if __name__ == '__main__':
     str = raw_input("input:")
     mode = int(str)
     print "choosed %d"%mode
-    index=0
+    print "Please set the start index:"
+    str = raw_input("input:")
+    index = int(str)
+    print "start index is %d"%index
+    str = raw_input("Press any key to continue")
     for file in os.listdir(input_dir):
         if os.path.isfile(os.path.join(input_dir,file)):
             if file.find('.bmp') > 0:
-                index+=1
                 rename_file = ("%06d.bmp"%index)
                 print file+" ==> "+rename_file
                 #shutil.copy(os.path.join(input_dir,file), \
@@ -110,6 +113,7 @@ if __name__ == '__main__':
                             os.path.join(output_dir, rename_file))
                 else:
                     exit()
+                index+=1
                         
 
             
