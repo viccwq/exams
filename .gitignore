@@ -1,3 +1,11 @@
 *.exe
 *.o
 **/.ipynb_checkpoints/
+
+# igrnore the file related to cscope
+cscope.file
+cscope.in.out
+cscope.out
+cscope.po.out
+gen_cs.sh
+tags
